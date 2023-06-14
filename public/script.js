@@ -99,26 +99,29 @@ function footer(toDos, onChange) {
 }
 
 function toDoList() {
+   
    let toDos = [];
-
    fetch("/todos").then((resp) => resp.json()).then((resp) => {
-      toDos = resp
+      toDos = resp;
       update()
    });
+   
 
-   // function sendTodos() {
-   //    fetch("/todos", {
-   //       method: "post",
-   //       headers: {
-   //          "content-type": "application/json"
-   //       },
-   //       body: JSON.stringify(toDos)
-   //    })
-   // }
+   function sendTodos() {
+      fetch('/todos', {
+         method: "post",
+         headers: 
+            {
+               "content-type": "application/json"
+            },
+         body: JSON.stringify(toDos)
+      })
+   }
 
    const main = document.createElement("div")
 
    function update() {
+  
       main.innerHTML = ""
       main.appendChild(input(function(newText, newDeadLine ) {
          toDos.push({
@@ -126,16 +129,16 @@ function toDoList() {
             deadLine: newDeadLine,
             completed: false
          })
-         //sendTodos();
+         sendTodos();
          update()
       }))
       main.appendChild(list(toDos, () => {
-         //sendTodos();
+         sendTodos();
          update()
       }))
       main.appendChild(footer(toDos,(newToDos) => {
          toDos = newToDos;
-         //sendTodos();
+         sendTodos();
          update()
       }))
    }
@@ -145,8 +148,9 @@ function toDoList() {
    main.style.alignItems = "center"
    main.style.width = "100%"
 
-   
-   update()
+
+   update();
+
    return main
 }
 
